@@ -1,0 +1,16 @@
+host:            test-node
+model:           Apple Mac mini (M1, 2020)
+ssd:             APPLE SSD AP0256Q fw 591
+kernel:          7.1.13-402.asahi.fc44.aarch64+16k
+cmdline:         BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.13-402.asahi.fc44.aarch64+16k root=UUID=<uuid> ro rootflags=subvol=root rootflags=subvol=root nvme_apple.flush_interval=0
+fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present
+write_cache:     write back   fua: 1
+/var:            btrfs rw,relatime,seclabel,compress=zstd:1,ssd,discard=async,space_cache=v2,subvolid=258,subvol=/var
+/boot:           ext4 rw,relatime,seclabel   free: 566M
+/boot/efi:       rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=winnt,errors=remount-ro
+kubelet:         active   containerd: active
+dnf5-automatic:  disabled
+uptime:           14:41:52 up 36 min,  2 users,  load average: 1.05, 0.74, 0.42
+flush snapshot (5 s):
+span=0.0s flushes=0  completed-in-driver(<200us)=0  sent-to-device=0  writes: FUA=0 plain=0
+  fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present

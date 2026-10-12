@@ -1,0 +1,40 @@
+=== btrfs-prealloc-wal alone
+span=10.4s flushes=1091  completed-in-driver(<200us)=0  sent-to-device=1091  writes: FUA=1091 plain=4565
+  flush latency histogram: <10us: 0, 10-50us: 0, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 1091
+  device flush latency: min 1816 us, median 3192 us, p90 3705 us, max 8040 us (n=1091)
+  FUA write latency: median 12 us, p90 13 us (n=1091)
+  plain write latency: median 29 us, p90 46 us (n=4565)
+  gap between device flushes: median 0.009 s, max 0.410 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=2100.975263):
+    7528a7c6d42504e6 btrfs-prealloc-wal           acks=1087    device-flushes-during=1086   (>= acks: NO) last-marked-seq=1086     exposed=1 (last covered seq 1085)
+  fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present
+=== btrfs-nocow-wal alone
+span=10.0s flushes=1107  completed-in-driver(<200us)=0  sent-to-device=1107  writes: FUA=1107 plain=3618
+  flush latency histogram: <10us: 0, 10-50us: 0, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 1107
+  device flush latency: min 1900 us, median 3260 us, p90 3426 us, max 10701 us (n=1107)
+  FUA write latency: median 12 us, p90 16 us (n=1107)
+  plain write latency: median 25 us, p90 33 us (n=3618)
+  gap between device flushes: median 0.009 s, max 0.016 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=2112.159344):
+    1280a9c760e11933 btrfs-nocow-wal              acks=1102    device-flushes-during=1102   (>= acks: yes) last-marked-seq=1101     exposed=0 (last covered seq 1101)
+  fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present
+=== btrfs-cow-append alone
+span=10.0s flushes=1057  completed-in-driver(<200us)=0  sent-to-device=1057  writes: FUA=1057 plain=3251
+  flush latency histogram: <10us: 0, 10-50us: 0, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 1057
+  device flush latency: min 1792 us, median 3246 us, p90 3839 us, max 14948 us (n=1057)
+  FUA write latency: median 12 us, p90 21 us (n=1057)
+  plain write latency: median 32 us, p90 47 us (n=3251)
+  gap between device flushes: median 0.009 s, max 0.021 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=2123.303007):
+    397b26b583917ae3 btrfs-cow-append             acks=1054    device-flushes-during=1053   (>= acks: NO) last-marked-seq=1053     exposed=1 (last covered seq 1052)
+  fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present
+=== ext4-wal alone
+span=10.0s flushes=772  completed-in-driver(<200us)=0  sent-to-device=772  writes: FUA=175 plain=1034
+  flush latency histogram: <10us: 0, 10-50us: 0, 50-100us: 0, 100-200us: 0, 200-500us: 1, >=500us: 771
+  device flush latency: min 306 us, median 2620 us, p90 2717 us, max 6340 us (n=772)
+  FUA write latency: median 15 us, p90 22 us (n=175)
+  plain write latency: median 17 us, p90 26 us (n=1034)
+  gap between device flushes: median 0.013 s, max 0.017 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=2134.472642):
+    3d7445a3768c07b1 ext4-wal                     acks=765     device-flushes-during=768    (>= acks: yes) last-marked-seq=764      exposed=0 (last covered seq 764)
+  fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present

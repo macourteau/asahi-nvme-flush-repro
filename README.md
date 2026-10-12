@@ -144,7 +144,7 @@ the threshold.
 ## Results
 
 Raw outputs are in `results/` (see `results/README.md`). The node was idle
-apart from the test writers (E1) or quiesced (E2).
+apart from the test writers (E1, E3) or quiesced (E2).
 
 ### E0: flushes are swallowed (no power cut, `flush_interval=1000`)
 
@@ -205,13 +205,54 @@ about 240 records (about 5 s) less than predicted, and they did so alike: the
 SSD wrote part of its cache back on its own before the cut. FUA bought
 nothing.
 
+### E3: power cuts with `flush_interval=0` (5 pulls)
+
+The fix was set on the kernel command line and in `modprobe.d`, and
+`flushtrace.py fix` reported it active before every pull. Before the first
+pull, with no power cut:
+
+- the check that the setting survives a kernel update (see
+  [Workaround](#workaround-nvme_appleflush_interval0)) passed;
+- `node.sh probe` ran each variant alone for 10 s under the trace
+  (`results/E3-probe.txt`). No flush completed in under 200 µs, and every sync
+  reached the device. In `btrfs-cow-append` and `btrfs-prealloc-wal` the
+  device flushes are one fewer than the acknowledgements: the last sync fell
+  at the edge of the 10 s trace window.
+
+Pulls 7, 9 and 11 ran the four E1 variants. Pulls 8 and 10 ran
+`btrfs-prealloc-wal` (etcd's WAL pattern) alone. E is the analyze `exposed`
+count, as in E1:
+
+| Pull | btrfs-cow-append L/E | btrfs-prealloc-wal L/E | btrfs-nocow-wal L/E | ext4-wal L/E | Device flushes / all flushes |
+|---|---|---|---|---|---|
+| 7 | 0/1 | 0/0 | 0/0 | 0/1 | 26887 / 27308 |
+| 8 | - | 1/1 | - | - | 34535 / 34535 |
+| 9 | 0/0 | 1/1 | 1/1 | 0/1 | 97764 / 107045 |
+| 10 | - | 1/1 | - | - | 47173 / 47173 |
+| 11 | 0/0 | 1/1 | 0/0 | 0/1 | 52601 / 53427 |
+
+No writer lost more than one acknowledged record in a pull, against 15-150 in
+E1. Every lost record was the one acknowledged after the last device flush:
+its sync ended with the filesystem's FUA commit write, and no flush followed
+before the cut. That is the residue E2 predicts.
+
+The `<10us` histogram bucket, where E0 and E1 put the swallowed flushes, was
+empty in every pull. With `flush_interval=0` the driver cannot complete a
+flush itself, so every flush reached the device. Some completed in under
+600 µs (421, 9281 and 826 flushes in pulls 7, 9 and 11), presumably with a
+clean cache. The 600 µs threshold counts those as not reaching the device, so E is
+an upper bound here. After every cut, ext4 recovered its journal and btrfs
+replayed its tree log, with no checksum, transid or ext4 errors.
+
 ### Cost of `flush_interval=0`
 
 | Measure | Value |
 |---|---|
 | Device flush latency, idle (E0b) | median 3.4 ms, p90 3.9 ms |
 | Device flush latency, E1 load | median 3.7-4.3 ms, p90 6.8-8.2 ms |
+| Device flush latency, E3 load (with the fix) | median 3.4-3.6 ms, p90 3.8-5.7 ms |
 | `fdatasync` with the fix (`fsync_bench.py --n 200`, same M1 model, normal background load) | p50 4.0 ms, p99 10.9 ms |
+| `fdatasync` with the fix, 3 concurrent writers (`fsync_bench.py --n 1000` each, test machine) | p50 7.9 ms, p99 11.9 ms |
 | etcd `etcd_disk_wal_fsync_duration_seconds` over 30 min, member with the fix | mean 4.7 ms, 99.9% ≤ 16 ms |
 | the same, two members without the fix (same cluster, same window) | mean 1.0 and 1.2 ms |
 
@@ -394,9 +435,10 @@ safe middle value.
 With `flush_interval=0`, every flush reaches the SSD, but E2 shows that the
 controller acknowledges FUA writes from its volatile cache. Filesystems
 finish a sync with a FUA write after the preflush, so the last commit before a
-power cut can still be lost. That is expected to be the last commit only, a
-much smaller window than with the deferral. This repository has not measured
-it under `flush_interval=0`.
+power cut can still be lost. E3 measured this under `flush_interval=0`: at
+most one record per writer per pull was lost, always the record acknowledged
+after the last device flush. That is a much smaller window than with the
+deferral, but it is not zero.
 
 Requested changes:
 
@@ -413,23 +455,24 @@ Requested changes:
 - One machine model and SSD (M1, AP0256Q, firmware 591) was power-tested.
   A Mac mini (M2 Pro, 2023) with an AP0512Z showed the same flush swallowing
   in traces, but was not power-tested.
-- 4 E1 pulls and 2 E2 pulls. The results are consistent, but the sample is
-  small.
+- 4 E1 pulls, 2 E2 pulls and 5 E3 pulls. The results are consistent, but
+  the sample is small.
 - dcheck cannot fully see the loss of only the last one or two acknowledged
   records: those acknowledgements are the ones most likely to be in flight at
   the cut. A clean result under the fix therefore does not prove that FUA is
-  safe; E2 is the FUA test.
+  safe; E2 is the FUA test. (E3 nonetheless caught single-record losses.)
 - E depends on the trace reaching the listener host before the cut.
   Missing tail events show up as "trace tail lag" and inflate E, never
   deflate it.
 - The `--fake-us` threshold (600 µs) is empirical for this SSD. Other models may need
   a different value; the histogram shows where the gap is.
-- Power-cut tests with `flush_interval=0` (to bound the FUA residue) have not
-  been run yet.
 - The verify outputs also show `fs-verity ... FILE CORRUPTED` reports that
-  read back a zero block (`real_hash` is the SHA-256 of 4096 zero bytes) on
-  files written the day before. Such reports also appeared before the first
-  pull, look like a read-side problem, and are not investigated here.
+  read back a zero block (`real_hash` is the SHA-256 of 4096 zero bytes).
+  They are mostly logged early in boot and concern files installed by a package
+  update. The same reports appear on other machines of the same model
+  running the same kernel that were never power-cut. The affected files read
+  back correctly afterwards, and `rpm -V` reports them intact. This is a
+  boot-time read-side issue, unrelated to the flush bug.
 
 ## Repository layout
 
@@ -442,7 +485,7 @@ Requested changes:
 | `tools/e0.sh` | E0 flush-swallowing check and flush cost (no power cut) |
 | `tools/fsync_bench.py` | write+sync latency |
 | `tools/walparse.py` | etcd v3 WAL record walker, used on the original etcd member |
-| `results/` | per-pull verify and analyze outputs, E0, the health baseline |
+| `results/` | per-pull verify and analyze outputs, E0, the E3 probe and latency runs, the health baseline |
 
 All tools are Python 3 standard library or bash. Run the Python tools with
 `python3 -I`.

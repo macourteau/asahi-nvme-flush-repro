@@ -1,0 +1,9 @@
+span=462.0s flushes=47173  completed-in-driver(<600us)=0  sent-to-device=47173  writes: FUA=47173 plain=159858
+  flush latency histogram: <10us: 0, 10-50us: 0, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 47173
+  device flush latency: min 695 us, median 3585 us, p90 3858 us, max 17458 us (n=47173)
+  FUA write latency: median 14 us, p90 26 us (n=47173)
+  plain write latency: median 36 us, p90 49 us (n=159858)
+  gap between device flushes: median 0.010 s, max 0.024 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=542.323830):
+    70dea4ea344f90c5 btrfs-prealloc-wal           acks=47136   device-flushes-during=47169  (>= acks: yes) last-marked-seq=47135    exposed=1 (last covered seq 47134)
+      listener last ack=47135 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 1

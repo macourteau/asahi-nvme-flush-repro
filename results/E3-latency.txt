@@ -1,0 +1,3 @@
+dir=/var/tmp/fsb mode=fdatasync n=1000 gap=0.00s  p10=3780us p50=7940us p90=9970us p99=11859us max=19065us mean=6917us  >2ms: 994 (99.4%)  busy-time=6.92s
+dir=/var/tmp/fsb mode=fdatasync n=1000 gap=0.00s  p10=3845us p50=7911us p90=9966us p99=11894us max=19197us mean=6932us  >2ms: 993 (99.3%)  busy-time=6.93s
+dir=/var/tmp/fsb mode=fdatasync n=1000 gap=0.00s  p10=3843us p50=7952us p90=10010us p99=11925us max=19132us mean=6949us  >2ms: 994 (99.4%)  busy-time=6.95s

@@ -1,0 +1,62 @@
+host:            test-node
+model:           Apple Mac mini (M1, 2020)
+ssd:             APPLE SSD AP0256Q fw 591
+kernel:          7.1.13-402.asahi.fc44.aarch64+16k
+cmdline:         BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.13-402.asahi.fc44.aarch64+16k root=UUID=<uuid> ro rootflags=subvol=root rootflags=subvol=root nvme_apple.flush_interval=0
+fix ACTIVE: sysfs flush_interval=0, cmdline arg present, modprobe.d present
+write_cache:     write back   fua: 1
+/var:            btrfs rw,relatime,seclabel,compress=zstd:1,ssd,discard=async,space_cache=v2,subvolid=258,subvol=/var
+previous boot's last journal lines: (message text redacted)
+2026-10-12T14:43:33+00:00 test-node audit: <redacted>
+2026-10-12T14:43:33+00:00 test-node audit: <redacted>
+2026-10-12T14:43:33+00:00 test-node audit: <redacted>
+--- btrfs device stats (non-zero only):
+all zero
+--- dmesg counts: btrfs csum/transid/corrupt=0  fs-verity CORRUPTED=10  EXT4 errors=0
+--- dmesg fs/nvme lines:
+[    4.092910] nvme-apple 27bcc0000.nvme: RTKit: Initializing (protocol version 12)
+[    4.169592] nvme-apple 27bcc0000.nvme: RTKit: syslog message: cmd.c:6438:  boot mode normal
+[    4.183686] nvme nvme0: passthrough uses implicit buffer lengths
+[    4.194568]  nvme0n1: p1 p2 p3 p4 p5 p6 p7
+[    4.878783] BTRFS: device label fedora devid 1 transid 3849 /dev/nvme0n1p6 (259:6) scanned by mount (457)
+[    4.878934] BTRFS info (device nvme0n1p6): first mount of filesystem <uuid>
+[    4.878938] BTRFS info (device nvme0n1p6): using crc32c checksum algorithm
+[    4.880573] BTRFS info (device nvme0n1p6): start tree-log replay
+[    5.159053] BTRFS info (device nvme0n1p6): enabling ssd optimizations
+[    5.159062] BTRFS info (device nvme0n1p6): turning on async discard
+[    5.159064] BTRFS info (device nvme0n1p6): enabling free space tree
+[    7.876307] BTRFS info (device nvme0n1p6 state M): use zstd compression, level 1
+[    8.964626] EXT4-fs (nvme0n1p5): Supports (experimental) DIO atomic writes awu_min: 4096, awu_max: 4096
+[    8.969597] EXT4-fs (nvme0n1p5): recovery complete
+[    8.969624] EXT4-fs (nvme0n1p5): mounted filesystem <uuid> r/w with ordered data mode. Quota mode: none.
+[   10.979525] fs-verity (nvme0n1p6, inode 91302): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.979859] fs-verity (nvme0n1p6, inode 91151): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.979888] fs-verity (nvme0n1p6, inode 120257): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.982986] fs-verity (nvme0n1p6, inode 91315): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.987525] fs-verity (nvme0n1p6, inode 127443): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.988309] fs-verity (nvme0n1p6, inode 273845): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.988357] fs-verity (nvme0n1p6, inode 129446): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.988395] fs-verity (nvme0n1p6, inode 121303): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.988518] fs-verity (nvme0n1p6, inode 104280): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.989314] fs-verity (nvme0n1p6, inode 276569): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+--- /boot ext4 (/dev/nvme0n1p5):
+Filesystem state:         clean
+Errors behavior:          Continue
+Mount count:              11
+Maximum mount count:      -1
+--- fsck units this boot (fstab passno 0 for /boot means none is expected):
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Starting systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>...
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Finished systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>.
+/var/tmp/dcheck/cow/append.dat: listener got the last message from this writer at 2026-10-12T14:44:08.721 UTC (compare with the pull time)
+/var/tmp/dcheck/cow/append.dat: variant=btrfs-cow-append run=1ae3131b744cd5f0 on_disk_last=9174 acked_last=9174 intent_last=9174 stop='eof' end_off=37580800
+  OK: every acknowledged record is present (0 unacknowledged in-flight records also on disk)
+/var/tmp/dcheck/cow/wal.dat: listener got the last message from this writer at 2026-10-12T14:44:08.716 UTC (compare with the pull time)
+/var/tmp/dcheck/cow/wal.dat: variant=btrfs-prealloc-wal run=1d042ff4e4afbb8a on_disk_last=9115 acked_last=9115 intent_last=9116 stop='zero record' end_off=8204400
+  OK: every acknowledged record is present (0 unacknowledged in-flight records also on disk)
+/var/tmp/dcheck/nocow/wal.dat: listener got the last message from this writer at 2026-10-12T14:44:08.716 UTC (compare with the pull time)
+/var/tmp/dcheck/nocow/wal.dat: variant=btrfs-nocow-wal run=431eeed346cd9b82 on_disk_last=9339 acked_last=9338 intent_last=9339 stop='zero record' end_off=8406000
+  OK: every acknowledged record is present (1 unacknowledged in-flight records also on disk)
+/boot/.dcheck/wal.dat: listener got the last message from this writer at 2026-10-12T14:44:08.719 UTC (compare with the pull time)
+/boot/.dcheck/wal.dat: variant=ext4-wal run=11d6ec4b4faf78f9 on_disk_last=7443 acked_last=7443 intent_last=7443 stop='zero record' end_off=6699600
+  OK: every acknowledged record is present (0 unacknowledged in-flight records also on disk)
+verify exit code: 0
