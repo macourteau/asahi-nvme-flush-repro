@@ -1,0 +1,16 @@
+span=180.0s flushes=91340  completed-in-driver(<600us)=91018  sent-to-device=322  writes: FUA=77951 plain=274181
+  flush latency histogram: <10us: 28556, 10-50us: 57837, 50-100us: 4085, 100-200us: 502, 200-500us: 36, >=500us: 324
+  in-driver completion latency: median 12.0 us
+  device flush latency: min 785 us, median 3772 us, p90 7455 us, max 12288 us (n=322)
+  FUA write latency: median 13 us, p90 26 us (n=77951)
+  plain write latency: median 30 us, p90 46 us (n=274181)
+  gap between device flushes: median 1.021 s, max 2.047 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=300.183546):
+    0bdc5e8f2f297ac4 btrfs-cow-append             acks=28295   device-flushes-during=321    (>= acks: NO) last-marked-seq=28294    exposed=25 (last covered seq 28269)
+      listener last ack=28294 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 25
+    4eb45bf18aaacca6 btrfs-nocow-wal              acks=28466   device-flushes-during=321    (>= acks: NO) last-marked-seq=28465    exposed=26 (last covered seq 28439)
+      listener last ack=28465 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 26
+    067adc01dfeede42 btrfs-prealloc-wal           acks=28283   device-flushes-during=321    (>= acks: NO) last-marked-seq=28282    exposed=26 (last covered seq 28256)
+      listener last ack=28282 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 26
+    538e0a2c7d8563b2 ext4-wal                     acks=16941   device-flushes-during=321    (>= acks: NO) last-marked-seq=16940    exposed=15 (last covered seq 16925)
+      listener last ack=16940 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 15

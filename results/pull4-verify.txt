@@ -1,0 +1,62 @@
+host:            test-node
+model:           Apple Mac mini (M1, 2020)
+ssd:             APPLE SSD AP0256Q fw 591
+kernel:          7.1.13-402.asahi.fc44.aarch64+16k
+cmdline:         BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.13-402.asahi.fc44.aarch64+16k root=UUID=<uuid> ro rootflags=subvol=root rootflags=subvol=root
+fix NOT ACTIVE: sysfs flush_interval=1000, cmdline arg absent, modprobe.d absent
+write_cache:     write back   fua: 1
+/var:            btrfs rw,relatime,seclabel,compress=zstd:1,ssd,discard=async,space_cache=v2,subvolid=258,subvol=/var
+previous boot's last journal lines: (message text redacted)
+2026-10-12T11:18:07+00:00 test-node audit: <redacted>
+2026-10-12T11:18:08+00:00 test-node audit: <redacted>
+2026-10-12T11:18:08+00:00 test-node audit: <redacted>
+--- btrfs device stats (non-zero only):
+all zero
+--- dmesg counts: btrfs csum/transid/corrupt=0  fs-verity CORRUPTED=10  EXT4 errors=0
+--- dmesg fs/nvme lines:
+[    4.124216] nvme-apple 27bcc0000.nvme: RTKit: Initializing (protocol version 12)
+[    4.200699] nvme-apple 27bcc0000.nvme: RTKit: syslog message: cmd.c:6438:  boot mode normal
+[    4.214783] nvme nvme0: passthrough uses implicit buffer lengths
+[    4.226564]  nvme0n1: p1 p2 p3 p4 p5 p6 p7
+[    4.839084] BTRFS: device label fedora devid 1 transid 3517 /dev/nvme0n1p6 (259:6) scanned by mount (446)
+[    4.849606] BTRFS info (device nvme0n1p6): first mount of filesystem <uuid>
+[    4.849613] BTRFS info (device nvme0n1p6): using crc32c checksum algorithm
+[    4.859546] BTRFS info (device nvme0n1p6): start tree-log replay
+[    5.108028] BTRFS info (device nvme0n1p6): enabling ssd optimizations
+[    5.108032] BTRFS info (device nvme0n1p6): turning on async discard
+[    5.108033] BTRFS info (device nvme0n1p6): enabling free space tree
+[    7.890968] BTRFS info (device nvme0n1p6 state M): use zstd compression, level 1
+[    8.941788] EXT4-fs (nvme0n1p5): Supports (experimental) DIO atomic writes awu_min: 4096, awu_max: 4096
+[    8.962016] EXT4-fs (nvme0n1p5): recovery complete
+[    8.962044] EXT4-fs (nvme0n1p5): mounted filesystem <uuid> r/w with ordered data mode. Quota mode: none.
+[   10.863141] fs-verity (nvme0n1p6, inode 205237): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.864619] fs-verity (nvme0n1p6, inode 276629): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.866892] fs-verity (nvme0n1p6, inode 120257): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.867638] fs-verity (nvme0n1p6, inode 91151): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.868705] fs-verity (nvme0n1p6, inode 276569): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.869453] fs-verity (nvme0n1p6, inode 273845): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.870323] fs-verity (nvme0n1p6, inode 287651): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.871352] fs-verity (nvme0n1p6, inode 127443): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.871771] fs-verity (nvme0n1p6, inode 91302): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[   10.872902] fs-verity (nvme0n1p6, inode 129446): FILE CORRUPTED! pos=0, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+--- /boot ext4 (/dev/nvme0n1p5):
+Filesystem state:         clean
+Errors behavior:          Continue
+Mount count:              7
+Maximum mount count:      -1
+--- fsck units this boot (fstab passno 0 for /boot means none is expected):
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Starting systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>...
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Finished systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>.
+/var/tmp/dcheck/cow/append.dat: listener got the last message from this writer at 2026-10-12T11:18:53.660 UTC (compare with the pull time)
+/var/tmp/dcheck/cow/append.dat: variant=btrfs-cow-append run=1a9f6c6e80233338 on_disk_last=23365 acked_last=23466 intent_last=23466 stop='eof' end_off=95707136
+  VIOLATION: 101 acknowledged records lost (404.0 KiB)
+/var/tmp/dcheck/cow/wal.dat: listener got the last message from this writer at 2026-10-12T11:18:53.660 UTC (compare with the pull time)
+/var/tmp/dcheck/cow/wal.dat: variant=btrfs-prealloc-wal run=44ee53c7d3d3638c on_disk_last=23298 acked_last=23397 intent_last=23397 stop='zero record' end_off=20969100
+  VIOLATION: 99 acknowledged records lost (87.0 KiB)
+/var/tmp/dcheck/nocow/wal.dat: listener got the last message from this writer at 2026-10-12T11:18:53.660 UTC (compare with the pull time)
+/var/tmp/dcheck/nocow/wal.dat: variant=btrfs-nocow-wal run=4cc2ac90739b81b4 on_disk_last=23514 acked_last=23613 intent_last=23613 stop='zero record' end_off=21163500
+  VIOLATION: 99 acknowledged records lost (87.0 KiB)
+/boot/.dcheck/wal.dat: listener got the last message from this writer at 2026-10-12T11:18:53.652 UTC (compare with the pull time)
+/boot/.dcheck/wal.dat: variant=ext4-wal run=4402dd36418854b8 on_disk_last=13996 acked_last=14056 intent_last=14056 stop='zero record' end_off=12597300
+  VIOLATION: 60 acknowledged records lost (52.7 KiB)
+verify exit code: 1

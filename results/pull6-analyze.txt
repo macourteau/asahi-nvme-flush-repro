@@ -1,0 +1,12 @@
+span=110.0s flushes=13  completed-in-driver(<600us)=7  sent-to-device=6  writes: FUA=5301 plain=5795
+  flush latency histogram: <10us: 5, 10-50us: 2, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 6
+  in-driver completion latency: median 6.0 us
+  device flush latency: min 2494 us, median 3084 us, p90 3648 us, max 5721 us (n=6)
+  FUA write latency: median 30 us, p90 39 us (n=5301)
+  plain write latency: median 29 us, p90 41 us (n=5795)
+  gap between device flushes: median 7.109 s, max 42.496 s
+  per dcheck run (sync = acks; exposed = acks after the last device-flush setup at t=162.935909):
+    7ecada8a7685f4c4 ext4-fua-direct              acks=5291    device-flushes-during=5      (>= acks: NO) last-marked-seq=5290     exposed=1326 (last covered seq 3964)
+      listener last ack=5290 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 1326
+    3d6df3ef85ce012e ext4-nosync-control          acks=5315    device-flushes-during=5      (>= acks: NO) last-marked-seq=5314     exposed=1334 (last covered seq 3980)
+      listener last ack=5314 -> trace tail lag 0 acks; predicted max loss if unflushed data is lost = 1334

@@ -1,0 +1,21 @@
+2026-10-12T01:29:42Z
+### E0a: 300 back-to-back fdatasyncs under an 8 s trace
+dir=/var/tmp/fsb mode=fdatasync n=300 gap=0.00s  p10=151us p50=208us p90=295us p99=387us max=421us mean=208us  >2ms: 0 (0.0%)  busy-time=0.06s
+span=3.3s flushes=302  completed-in-driver(<200us)=300  sent-to-device=2  writes: FUA=301 plain=1046
+  flush latency histogram: <10us: 299, 10-50us: 1, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 2
+  in-driver completion latency: median 3.0 us
+  device flush latency: min 3584 us, median 3856 us, p90 3584 us, max 4128 us (n=2)
+  FUA write latency: median 7 us, p90 10 us (n=301)
+  plain write latency: median 15 us, p90 24 us (n=1046)
+  gap between device flushes: median 1.051 s, max 1.051 s
+  fix NOT ACTIVE: sysfs flush_interval=1000, cmdline arg absent, modprobe.d absent
+### E0b: 10 fdatasyncs 2.5 s apart under a 30 s trace (each sync > 1 s after the previous device flush)
+dir=/var/tmp/fsb mode=fdatasync n=10 gap=2.50s  p10=860us p50=4425us p90=4514us p99=4514us max=4514us mean=3531us  >2ms: 8 (80.0%)  busy-time=0.04s
+span=22.5s flushes=18  completed-in-driver(<200us)=6  sent-to-device=12  writes: FUA=16 plain=133
+  flush latency histogram: <10us: 5, 10-50us: 1, 50-100us: 0, 100-200us: 0, 200-500us: 0, >=500us: 12
+  in-driver completion latency: median 4.0 us
+  device flush latency: min 2548 us, median 3425 us, p90 3906 us, max 5812 us (n=12)
+  FUA write latency: median 12 us, p90 16 us (n=16)
+  plain write latency: median 42 us, p90 250 us (n=133)
+  gap between device flushes: median 2.505 s, max 2.505 s
+  fix NOT ACTIVE: sysfs flush_interval=1000, cmdline arg absent, modprobe.d absent

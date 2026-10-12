@@ -1,0 +1,30 @@
+--- btrfs device stats (non-zero only):
+all zero
+--- dmesg counts: btrfs csum/transid/corrupt=0  fs-verity CORRUPTED=2  EXT4 errors=0
+--- dmesg fs/nvme lines:
+[    2.426351] Btrfs loaded, zoned=yes, fsverity=yes
+[    4.130481] nvme-apple 27bcc0000.nvme: RTKit: Initializing (protocol version 12)
+[    4.209813] nvme-apple 27bcc0000.nvme: RTKit: syslog message: cmd.c:6438:  boot mode normal
+[    4.223745] nvme nvme0: passthrough uses implicit buffer lengths
+[    4.239542]  nvme0n1: p1 p2 p3 p4 p5 p6 p7
+[    4.883607] BTRFS: device label fedora devid 1 transid 59 /dev/nvme0n1p6 (259:6) scanned by mount (448)
+[    4.884193] BTRFS info (device nvme0n1p6): first mount of filesystem <uuid>
+[    4.884197] BTRFS info (device nvme0n1p6): using crc32c checksum algorithm
+[    4.891845] BTRFS info (device nvme0n1p6): enabling ssd optimizations
+[    4.891850] BTRFS info (device nvme0n1p6): turning on async discard
+[    4.891851] BTRFS info (device nvme0n1p6): enabling free space tree
+[    6.683730] BTRFS info (device nvme0n1p6 state M): use zstd compression, level 1
+[    8.002416] EXT4-fs (nvme0n1p5): Supports (experimental) DIO atomic writes awu_min: 4096, awu_max: 4096
+[    8.054531] EXT4-fs (nvme0n1p5): mounted filesystem <uuid> r/w with ordered data mode. Quota mode: none.
+[   64.437572] nvme-apple 27bcc0000.nvme: RTKit: syslog message: blog.c:102: New BlogBuf low 27
+[   65.237573] nvme-apple 27bcc0000.nvme: RTKit: syslog message: blog.c:102: New BlogBuf low 26
+[  733.586663] fs-verity (nvme0n1p6, inode 83702): FILE CORRUPTED! pos=278528, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+[  733.670146] fs-verity (nvme0n1p6, inode 83684): FILE CORRUPTED! pos=245760, level=-1, want_hash=sha256:<redacted>, real_hash=sha256:ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+--- /boot ext4 (/dev/nvme0n1p5):
+Filesystem state:         clean
+Errors behavior:          Continue
+Mount count:              3
+Maximum mount count:      -1
+--- fsck units this boot (fstab passno 0 for /boot means none is expected):
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Starting systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>...
+2026-09-14T00:00:02+00:00 test-node systemd[1]: Finished systemd-fsck-root.service - File System Check on /dev/disk/by-uuid/<uuid>.

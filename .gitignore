@@ -1,0 +1,13 @@
+# Run outputs, if the procedure is run from the repository root. They contain
+# hostnames, IP addresses and filesystem UUIDs; scrub them before adding any
+# to results/.
+*.trace
+*.trace.err
+/listener.log
+/listener.pid
+/stream.pid
+/dcheck-state/
+/pull*-*.txt
+/baseline-health.txt
+/E0.txt
+__pycache__/
